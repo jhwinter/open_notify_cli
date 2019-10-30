@@ -12,6 +12,7 @@ def display_iss_location() -> bool:
     :return: function executed correctly
     :rtype: bool
     """
+
     res = requests.get("http://api.open-notify.org/iss-now.json").json()
     time = datetime.datetime.now()
     latitude: float = res["iss_position"]["latitude"]
@@ -32,6 +33,7 @@ def display_iss_pass_times(latitude: float, longitude: float) -> bool:
     :return: function executed correctly
     :rtype: bool
     """
+
     res = requests.get(f"http://api.open-notify.org/iss-pass.json?lat={latitude}&lon={longitude}").json()
     for iss_pass in res["response"]:
         time = iss_pass["risetime"]
@@ -47,6 +49,7 @@ def display_people_in_space() -> bool:
     :return: function executed correctly
     :rtype: bool
     """
+
     res = requests.get("http://api.open-notify.org/astros.json").json()
     number: int = res["number"]
     craft: str = res["people"][0]["craft"]
