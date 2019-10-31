@@ -15,8 +15,8 @@ def display_iss_location() -> bool:
 
     res = requests.get("http://api.open-notify.org/iss-now.json").json()
     time = datetime.datetime.now()
-    latitude: float = res["iss_position"]["latitude"]
-    longitude: float = res["iss_position"]["longitude"]
+    latitude: float = res.get("iss_position").get("latitude")
+    longitude: float = res.get("iss_position").get("longitude")
     print(f"The ISS current location at {time} is ({latitude}, {longitude})")
 
     return True
@@ -35,9 +35,9 @@ def display_iss_pass_times(latitude: float, longitude: float) -> bool:
     """
 
     res = requests.get(f"http://api.open-notify.org/iss-pass.json?lat={latitude}&lon={longitude}").json()
-    for iss_pass in res["response"]:
-        time = iss_pass["risetime"]
-        duration: int = iss_pass["duration"]
+    for iss_pass in res.get("response"):
+        time = iss_pass.get("risetime")
+        duration: int = iss_pass.get("duration")
         print(f"The ISS will be overhead {latitude, longitude} at {time} for {duration}")
 
     return True
@@ -51,9 +51,12 @@ def display_people_in_space() -> bool:
     """
 
     res = requests.get("http://api.open-notify.org/astros.json").json()
-    number: int = res["number"]
+    number: int = res.get("number")
     craft: str = res["people"][0]["craft"]
-    names: list = [person["name"] for person in res["people"]]
+    names: list = [
+        person.get("name") for person in res.get("people")
+        if person.get("craft") == craft
+    ]
     names_str: str = ", ".join(names)
     print(f"There are {number} people aboard the {craft}. They are {names_str}")
 

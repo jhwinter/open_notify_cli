@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+
 import unittest
 
 import app
+
 
 class TestApp(unittest.TestCase):
     """Class for unit testing app
